@@ -64,7 +64,7 @@ export const postJob = (data) => {
         } catch (errors) {
 
             const formattedErrors = {};
-            
+
             errors.forEach(error => formattedErrors[error.field] = error.message)
 
             // console.log('eror mera', formattedErrors)
@@ -74,5 +74,16 @@ export const postJob = (data) => {
                 phoneError: formattedErrors.phone
             })
         }
+    }
+}
+
+export const clearErrorMessage = () => {
+    return async dispatch => {
+        dispatch({
+            type: 'CLEAR_ERROR_MESSAGE',
+            descriptionErrorMessage: undefined,
+            phoneErrorMessage: undefined
+        })
+
     }
 }

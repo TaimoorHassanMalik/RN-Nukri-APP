@@ -1,9 +1,7 @@
 //import liraries
-import React, { useState, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Button, TouchableOpacity } from 'react-native';
+import React, { useState, useCallback, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Button, Alert } from 'react-native';
 import * as jobActions from '../Redux/Actions/jobActions';
-import Icon from 'react-native-vector-icons/Ionicons';
-import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux'
 
 
@@ -13,16 +11,17 @@ const PostJobsScreen = (props) => {
     const dispatch = useDispatch()
     const descriptionErrorMessage = useSelector(state => state.job.descriptionErrorMessage)
     const phoneErrorMessage = useSelector(state => state.job.phoneErrorMessage)
+    const jobCreated = useSelector(state => state.job.jobCreated)
 
     const [description, setDescription] = useState('')
     const [phone, setPhone] = useState('')
 
     const data = useCallback(() => {
-        const jobdata = {
+        const jobData = {
             description: description,
             phone: phone
         }
-        dispatch(jobActions.postJob(jobdata))
+        dispatch(jobActions.postJob(jobData))
         // console.log('postJob screen jobData',jobdata)
 
     }, [description, phone])
@@ -30,6 +29,23 @@ const PostJobsScreen = (props) => {
     const submit = async () => {
         await data()
     }
+
+    useEffect(() => {
+        if (jobCreated) {
+            Alert.alert('You created job succesfully', 'see you jobs',
+                [
+                    {
+                        text: 'yes',
+                        onPress: () => {
+                            setPhone('')
+                            setDescription('')
+                            dispatch(jobActions.clearErrorMessage())
+                            props.navigation.navigate('Home')
+                        }
+                    }
+                ])
+        }
+    }, [jobCreated])
 
     return (
         <KeyboardAvoidingView style={{ flex: 1, paddingHorizontal: 6 }} enabledKeyboardOffset={350}>

@@ -26,7 +26,7 @@ const LoadingScreen = (props) => {
                 }
             })
         } catch{
-            console.log('error')
+            console.log('errrors')
         }
     }
 

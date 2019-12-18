@@ -1,5 +1,5 @@
 
-
+import * as firebase from 'firebase'
 
 export const loggedIn = (userId, token, name) => {
     return async dispatch => {
@@ -11,3 +11,19 @@ export const loggedIn = (userId, token, name) => {
         })
     }
 }
+
+export const loggedOut = () => {
+    return async dispatch => {
+        firebase.auth().signOut()
+            .then(function () {
+                dispatch({
+                    type: "LOGGED_IN",
+                    userId: undefined,
+                    token: undefined,
+                    name: undefined,
+                    image: undefined
+                })
+            })
+    }
+}
+

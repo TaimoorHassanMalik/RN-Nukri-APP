@@ -3,7 +3,7 @@
 export default (state = {}, action) => {
     switch (action.type) {
         case 'LOGGED_IN':
-            console.log('This is Reducer',action)
+            console.log('This is Reducer', action)
             return {
                 ...state,
                 userId: action.userId,

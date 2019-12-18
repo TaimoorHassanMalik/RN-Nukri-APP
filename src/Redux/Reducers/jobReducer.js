@@ -1,4 +1,6 @@
-import JobModel from '../../Model/jobModel';
+
+import JobModel from '../../Model/jobModel'
+
 
 const initialState = {
     availableJobs: [],
@@ -7,9 +9,10 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case 'CREATED_JOB_SUCCESS':
+
+        case "CREATED_JOB_SUCCESS":
+
             const newJob = new JobModel(action.jobData.id, action.jobData.ownerId, action.jobData.bgColor, action.jobData.description, action.jobData.phone)
-            // console.log('details', newJob)
             return {
                 ...state,
                 availableJobs: state.availableJobs.concat(newJob),
@@ -17,24 +20,53 @@ export default (state = initialState, action) => {
                 jobCreated: action.jobCreated
             }
 
-        case 'CREATE_JOB_FAILED':
-            // console.log('ye dekho',action)
+
+        case "CREATE_JOB_FAILED":
+
             return {
                 ...state,
                 descriptionErrorMessage: action.descriptionErrorMessage,
                 phoneErrorMessage: action.phoneErrorMessage
             }
 
-        case 'CLEAR_ERROR_MESSAGE':
+        case "CLEAR_ERROR_MESSAGE":
             return {
                 ...state,
                 descriptionErrorMessage: action.descriptionErrorMessage,
                 phoneErrorMessage: action.phoneErrorMessage
+
             }
+
+
+        case "SET_JOBS":
+
+
+            console.log('jobRedcuer fetching', action)
+
+            return {
+                ...state,
+                availableJobs: action.allJobs.sort(function (a, b) {
+                    return 0.5 - Math.random()
+                }),
+                userOwnJobs: action.userOwnJobs
+            }
+
+
+        case "DELETE_JOB":
+            return {
+                ...state,
+                userOwnJobs: state.userOwnJobs.filter(job => job.id !== action.jobId),
+                availableJobs: state.availableJobs.filter(job => job.id !== action.jobId)
+
+            }
+
 
 
 
         default:
             return state
     }
+
+
+
 }
